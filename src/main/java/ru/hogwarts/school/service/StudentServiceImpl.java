@@ -3,15 +3,13 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService{
 
-    private Map<Long, Student> students = new HashMap<>();
+    private final Map<Long, Student> students = new HashMap<>();
     private Long id = 0L;
 
     @Override
@@ -39,13 +37,9 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public List<Student> getStudentsByAge(int studentAge) {
-        List <Student> studentsByAge = new ArrayList<>();
-        for (int i = 0; i < students.size(); i++) {
-            Student currentStudent = students.get(i);
-            if (currentStudent.getAge() == studentAge) {
-                studentsByAge.add(currentStudent);
-            }
-        }
-        return studentsByAge;
+        Collection<Student> allStudents = students.values();
+        return allStudents.stream()
+                .filter(student -> student.getAge() == studentAge)
+                .collect(Collectors.toList());
     }
 }
