@@ -9,7 +9,7 @@ public interface StudentService {
     Student createStudent(Student student);
     Student getStudent(Long studentId);
     Student updateStudent(Student student);
-    Student deleteStudent(Long studentId);
+    void deleteStudent(Long studentId);
     List<Student> getStudentsByAge(int studentAge);
 
 }
