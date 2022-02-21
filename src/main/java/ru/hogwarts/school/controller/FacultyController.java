@@ -40,11 +40,8 @@ public class FacultyController {
 
     @DeleteMapping("{facultyId}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long facultyId) {
-        Faculty deletedFaculty = facultyService.deleteFaculty(facultyId);
-        if (deletedFaculty == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
+        facultyService.deleteFaculty(facultyId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/color/{facultyColor}")
