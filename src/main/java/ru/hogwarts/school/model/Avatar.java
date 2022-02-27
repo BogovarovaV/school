@@ -12,15 +12,15 @@ public class Avatar {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    String filePath;
-    long fileSize;
-    String mediaType;
-    byte[] data;
+    private String filePath;
+    private long fileSize;
+    private String mediaType;
+    private byte[] data;
 
     @OneToOne
-    Student student;
+    private Student student;
 
     public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data) {
         this.id = id;
