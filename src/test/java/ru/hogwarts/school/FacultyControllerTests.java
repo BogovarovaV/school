@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.hogwarts.school.controller.FacultyController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -23,11 +22,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.hogwarts.school.SchoolApplicationTestsConstants.*;
 
@@ -134,15 +134,15 @@ public class FacultyControllerTests {
     }
 
     @Test
-    void findFacultyByColor() throws Exception {
-        when(facultyRepository.findFacultiesByNameOrColorIgnoreCase(TEST_FACULTY_NAME, TEST_FACULTY_COLOR)).thenReturn((Collection<Faculty>) facultyList);
+    void findFacultyByNameOrColor() throws Exception {
+        when(facultyRepository.findFacultiesByNameOrColorIgnoreCase(TEST_FACULTY_NAME, TEST_FACULTY_COLOR)).thenReturn((List<Faculty>) facultyList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/?color=" + TEST_FACULTY_COLOR)
+                        .get("/faculty/name-or-color/?color=" + TEST_FACULTY_COLOR)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[*]").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty());
+//                .andExpect(jsonPath("$.[*]").exists())
+                .andExpect(jsonPath("$.[*].id").isNotEmpty());
     }
 
 }
