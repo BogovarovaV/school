@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.hogwarts.school.controller.FacultyController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -135,14 +135,12 @@ public class FacultyControllerTests {
 
     @Test
     void findFacultyByNameOrColor() throws Exception {
-        when(facultyRepository.findFacultiesByNameOrColorIgnoreCase(TEST_FACULTY_NAME, TEST_FACULTY_COLOR)).thenReturn((List<Faculty>) facultyList);
+        when(facultyRepository.findFacultiesByNameOrColorIgnoreCase(anyString(), anyString())).thenReturn((List<Faculty>) facultyList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/name-or-color/?color=" + TEST_FACULTY_COLOR)
+                        .get("/faculty/name-or-color/?name=" + TEST_FACULTY_NAME + "&color=" + TEST_FACULTY_COLOR)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.[*]").exists())
-                .andExpect(jsonPath("$.[*].id").isNotEmpty());
+                .andExpect(status().isOk());
     }
 
 }
