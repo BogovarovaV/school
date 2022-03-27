@@ -12,4 +12,8 @@ public interface StudentService {
     void deleteStudent(Long studentId);
     List<Student> getStudentsByAge(int studentAge);
     List<Student> findByAgeBetween(int min, int max);
+
+    int getStudentNumber();
+    int getStudentsAverageAge();
+    List<Student> getFiveLastStudents();
 }

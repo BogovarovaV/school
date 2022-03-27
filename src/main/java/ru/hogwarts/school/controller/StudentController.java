@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
@@ -60,5 +61,24 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentsByAgeBetween);
+    }
+
+    @GetMapping("/student-number")
+    public Integer getStudentNumber() {
+        return studentService.getStudentNumber();
+    }
+
+    @GetMapping("/students-avg-age")
+    public Integer getStudentsAverageAge() {
+        return studentService.getStudentsAverageAge();
+    }
+
+    @GetMapping("/five-last-students")
+    public ResponseEntity<List<Student>> getFiveLastStudents() {
+        List<Student> fiveLastStudents = studentService.getFiveLastStudents();
+        if (fiveLastStudents.size() == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(fiveLastStudents);
     }
 }
