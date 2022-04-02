@@ -20,6 +20,8 @@ public class StudentServiceImpl implements StudentService{
         this.studentRepository = studentRepository;
     }
 
+    int count = 1;
+
     @Override
     public Student createStudent(Student student) {
         logger.info("Was invoked method for create student");
@@ -97,5 +99,48 @@ public class StudentServiceImpl implements StudentService{
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+
+    @Override
+    public void getStudentsNamesInParallelThreads() {
+        logger.info("Was invoked method for get students' names in parallel threads");
+        System.out.println("1 - " + studentRepository.getById(1L).getName());
+        System.out.println("2 - " + studentRepository.getById(13L).getName());
+
+        new Thread(() -> {
+            System.out.println("3 - " + studentRepository.getById(14L).getName());
+            System.out.println("4 - " + studentRepository.getById(18L).getName());
+
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("5 - " + studentRepository.getById(19L).getName());
+            System.out.println("6 - " + studentRepository.getById(20L).getName());
+
+        }).start();
+    }
+
+    @Override
+    public void getStudentsNamesInSynchronisedThreads() {
+        logger.info("Was invoked method for get students' names in synchronised threads");
+        getNamesById(1L);
+        getNamesById(13L);
+
+        new Thread(() -> {
+            getNamesById(14L);
+            getNamesById(18L);
+
+        }).start();
+
+        new Thread(() -> {
+            getNamesById(19L);
+            getNamesById(20L);
+
+        }).start();
+    }
+
+    private synchronized void getNamesById(Long id) {
+        System.out.println(count + " - " + studentRepository.findById(id).get().getName());
+        count ++;
     }
 }
