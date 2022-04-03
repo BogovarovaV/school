@@ -19,4 +19,7 @@ public interface StudentService {
 
     List<String> getAllStudentsNamesStartingWithA();
     double getStudentsAverageAgeUsingStream();
+
+    void getStudentsNamesInParallelThreads();
+    void getStudentsNamesInSynchronisedThreads();
 }
